@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 toml = "0.5.9"
+dirs = "4.0.0"
 
 [dependencies.serde]
 version = "1.0.143"
