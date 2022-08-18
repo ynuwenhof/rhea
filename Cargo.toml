@@ -6,6 +6,7 @@ edition = "2021"
 [dependencies]
 toml = "0.5.9"
 dirs = "4.0.0"
+rhai = "1.8.0"
 color-eyre = "0.6.2"
 
 [dependencies.serde]
