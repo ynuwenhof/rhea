@@ -18,7 +18,11 @@ impl FromStr for Event {
     type Err = rhai::ParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let engine = Engine::new();
+        let mut engine = Engine::new();
+
+        #[allow(deprecated)]
+        engine.on_def_var(|_, info, _| Ok(info.name != "ctx"));
+
         let ast = engine.compile(s)?;
 
         Ok(Self { engine, ast })

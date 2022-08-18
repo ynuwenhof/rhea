@@ -4,7 +4,7 @@ mod event;
 use crate::config::Config;
 use crate::event::Event;
 use color_eyre::eyre::eyre;
-use rhai::Scope;
+use rhai::{Map, Scope};
 use std::str::FromStr;
 use std::sync::Arc;
 use tokio::io::AsyncWriteExt;
@@ -35,7 +35,11 @@ async fn main() -> color_eyre::Result<()> {
 
         tokio::spawn(async move {
             let mut stream = stream;
+
+            let ctx = Map::new();
+
             let mut scope = Scope::new();
+            scope.push("ctx", ctx);
 
             let allow = task::spawn_blocking(move || event.connect(&mut scope))
                 .await
