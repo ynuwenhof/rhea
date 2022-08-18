@@ -2,6 +2,7 @@ use crate::config::Config;
 use color_eyre::eyre::eyre;
 
 mod config;
+mod event;
 
 #[tokio::main]
 async fn main() -> color_eyre::Result<()> {
