@@ -4,7 +4,7 @@ mod event;
 use crate::config::Config;
 use crate::event::Event;
 use color_eyre::eyre::eyre;
-use rhai::{Map, Scope};
+use rhai::{Dynamic, Map, Scope};
 use std::str::FromStr;
 use std::sync::Arc;
 use tokio::io::AsyncWriteExt;
@@ -30,13 +30,14 @@ async fn main() -> color_eyre::Result<()> {
     let listener = TcpListener::bind(config.server.addr).await?;
 
     loop {
-        let (stream, _addr) = listener.accept().await?;
+        let (stream, addr) = listener.accept().await?;
         let event = event.clone();
 
         tokio::spawn(async move {
             let mut stream = stream;
 
-            let ctx = Map::new();
+            let mut ctx = Map::new();
+            ctx.insert("addr".into(), Dynamic::from(addr));
 
             let mut scope = Scope::new();
             scope.push("ctx", ctx);
