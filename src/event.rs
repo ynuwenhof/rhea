@@ -1,4 +1,4 @@
-use rhai::{Engine, Scope, AST};
+use rhai::{Engine, EvalAltResult, Scope, AST};
 use std::net::{IpAddr, SocketAddr};
 use std::str::FromStr;
 
@@ -8,10 +8,8 @@ pub struct Event {
 }
 
 impl Event {
-    pub fn connect(&self, scope: &mut Scope) -> bool {
-        self.engine
-            .call_fn(scope, &self.ast, "connect", ())
-            .unwrap_or(true)
+    pub fn connect(&self, scope: &mut Scope) -> Result<bool, Box<EvalAltResult>> {
+        self.engine.call_fn(scope, &self.ast, "connect", ())
     }
 }
 

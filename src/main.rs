@@ -42,11 +42,15 @@ async fn main() -> color_eyre::Result<()> {
             let mut scope = Scope::new();
             scope.push("ctx", ctx);
 
-            let allow = task::spawn_blocking(move || event.connect(&mut scope))
-                .await
-                .unwrap_or(true);
+            let evnt = event.clone();
+            let (allow, mut scope) = task::spawn_blocking(move || {
+                let val = evnt.connect(&mut scope);
 
-            if allow {
+                (val, scope)
+            })
+            .await?;
+
+            if allow.unwrap_or(true) {
                 todo!()
             }
 
