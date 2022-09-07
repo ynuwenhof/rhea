@@ -1,4 +1,5 @@
 mod config;
+mod context;
 mod event;
 
 use crate::config::Config;
