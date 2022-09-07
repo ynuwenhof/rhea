@@ -1,9 +1,11 @@
 mod config;
 mod context;
+mod error;
 mod event;
 
 use crate::config::Config;
 use crate::context::Context;
+use crate::error::Result;
 use crate::event::Event;
 use color_eyre::eyre::eyre;
 use rhai::{Dynamic, Map, Scope};
@@ -53,7 +55,7 @@ async fn main() -> color_eyre::Result<()> {
     }
 }
 
-async fn handle(stream: &mut TcpStream, ctx: Context, map: Map) -> color_eyre::Result<()> {
+async fn handle(stream: &mut TcpStream, ctx: Context, map: Map) -> Result<()> {
     let mut scope = Scope::new();
     scope.push("ctx", map);
 
